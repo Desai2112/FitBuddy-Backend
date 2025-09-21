@@ -11,7 +11,7 @@ export async function recipeGeneration(itemset) {
 
     try {
         const prompt = `Generate 3 creative and diverse meal suggestions that prominently feature the following ingredients: ${itemset.join(", ")}. 
-        Include additional common ingredients as needed to make the recipes flavorful and complete. 
+        Include additional common ingredients as needed to make the recipes flavorful and complete and make sure the recipe must be veg. 
         Provide the response in the following JSON format:
         {
             "meals": [

@@ -131,7 +131,7 @@ export const verifyOTP = async (req, res) => {
       password: password,
       name: name,
       role: role,
-      status: 'active'
+      status: 'active',
     });
 
     // Delete OTP after successful verification
@@ -191,7 +191,8 @@ export const login = async (req, res) => {
         email: user.email,
         name: user.name,
         role: user.role,
-        company: user.company
+        company: user.company,
+        profileCompleted:user.isProfileCompleted
       },
       success: true,
     });

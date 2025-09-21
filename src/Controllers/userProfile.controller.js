@@ -142,7 +142,7 @@ export const updateProfile = async (req, res) => {
     }
 };
 
-export const stopVisibilityDoc = async (req, res) => {
+export const toggleVisibility = async (req, res) => {
     try {
         const { docId } = req.body;
 
@@ -168,8 +168,7 @@ export const stopVisibilityDoc = async (req, res) => {
             document.isVisible = true;
         }
         // Save the updated profile
-        await existingUser.save();
-
+        await existingUser.save()
         return res.status(200).json({
             success: true,
             message: "Document visibility stopped successfully."
@@ -225,11 +224,12 @@ export const getUserHistory = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found", success: false });
         }
-
+        console.log(user);
+        
         // Filter out documents where isVisible is false
         const filteredProfile = {
             ...user.toObject(),
-            documentList: user.documentList.filter(doc => doc.isVisible !== false)
+            documentList: user.documentList.filter(doc=>doc.isVisible!=false)
         };
 
         res.json({

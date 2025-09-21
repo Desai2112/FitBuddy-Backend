@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     default: 'user',
     required: true
   },
+  isProfileCompleted:{
+    type:Boolean,
+    default: false
+  },
   status: {
     type: String,
     enum: ['active', 'suspended', 'inactive'],
