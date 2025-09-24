@@ -12,32 +12,35 @@ export const createProfile = async (req, res) => {
         console.log("Request files:", req.files);
 
         const files = req.files;
-        if (!files || files.length === 0) {
-            return res.status(400).json({ success: false, message: "No files provided." });
-        }
+        // if (!files || files.length === 0) {
+        //     return res.status(400).json({ success: false, message: "No files provided." });
+        // }
 
         const uploadedFiles = [];
-        for (const file of files) {
-            const pdfLocalPath = file.path;
+        if(files && files.length>0){
 
-            console.log("Processing file at path:", pdfLocalPath);
-
-            if (!fs.existsSync(pdfLocalPath)) {
-                console.warn(`File does not exist: ${pdfLocalPath}`);
-                continue; // Skip this file
-            }
-
-            try {
-                const fileUrl = await uploadToS3(pdfLocalPath);
-                console.log("File successfully uploaded to S3:", fileUrl);
-                uploadedFiles.push({
-                    name: file.originalname,
-                    url: fileUrl,
-                    expiresAt: null, // Default expiration, if required
-                    visibleBlocked: false // Default visibility, if required
-                });
-            } catch (error) {
-                console.error("Error uploading file to S3:", error);
+            for (const file of files) {
+                const pdfLocalPath = file.path;
+    
+                console.log("Processing file at path:", pdfLocalPath);
+    
+                if (!fs.existsSync(pdfLocalPath)) {
+                    console.warn(`File does not exist: ${pdfLocalPath}`);
+                    continue; // Skip this file
+                }
+    
+                try {
+                    const fileUrl = await uploadToS3(pdfLocalPath);
+                    console.log("File successfully uploaded to S3:", fileUrl);
+                    uploadedFiles.push({
+                        name: file.originalname,
+                        url: fileUrl,
+                        expiresAt: null, // Default expiration, if required
+                        visibleBlocked: false // Default visibility, if required
+                    });
+                } catch (error) {
+                    console.error("Error uploading file to S3:", error);
+                }
             }
         }
 
@@ -61,6 +64,9 @@ export const createProfile = async (req, res) => {
 
         // Save the profile in the database
         const savedProfile = await userProfile.save();
+        await User.findByIdAndUpdate(req.session.userId,{
+            isProfileCompleted:true
+        });
 
         return res.status(201).json({
             success: true,
