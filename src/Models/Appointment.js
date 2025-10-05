@@ -84,12 +84,26 @@ appointmentSchema.index({ patientId: 1, appointmentDate: 1 });
 appointmentSchema.index({ doctorId: 1, appointmentDate: 1 });
 appointmentSchema.index({ status: 1 });
 
-// Validate that appointment date is not in the past
-appointmentSchema.pre('save', function(next) {
-    if (this.appointmentDate < new Date()) {
-        next(new Error('Appointment date cannot be in the past'));
+appointmentSchema.pre('save', function (next) {
+  const now = new Date();
+
+  // Validate appointmentDate
+  if (this.appointmentDate < now.setHours(0, 0, 0, 0)) {
+    return next(new Error('Appointment date cannot be in the past'));
+  }
+
+  // Validate timeSlot (if provided)
+  if (this.timeSlot && this.timeSlot.startTime) {
+    const appointmentDateTime = new Date(this.appointmentDate);
+    const [hours, minutes] = this.timeSlot.startTime.split(':').map(Number);
+
+    appointmentDateTime.setHours(hours, minutes, 0, 0);
+
+    if (appointmentDateTime <= now) {
+      return next(new Error('Appointment time cannot be in the past'));
     }
-    next();
+  }
+  next();
 });
 
 // Validate that the same doctor doesn't have overlapping appointments
