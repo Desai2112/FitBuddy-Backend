@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";  // Correct import alias
 
 export async function recipeGeneration(itemset) {
     const API_KEY = process.env.GOOGLE_API_KEY;
@@ -7,10 +7,10 @@ export async function recipeGeneration(itemset) {
     }
 
     const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });  // Use getGenerativeModel and proper name
 
     try {
-        const prompt = `Generate 3 creative and diverse meal suggestions that prominently feature the following ingredients: ${itemset.join(", ")}. 
+        const prompt = `Generate diverse meal suggestions that prominently feature the following ingredients: ${itemset.join(", ")}. 
         Include additional common ingredients as needed to make the recipes flavorful and complete and make sure the recipe must be veg. 
         Provide the response in the following JSON format:
         {
@@ -40,7 +40,7 @@ export async function recipeGeneration(itemset) {
         - Includes estimated nutritional information even if approximate.
         - Returns exactly 3 meal suggestions with no additional text outside the JSON structure.`;
 
-        const result = await model.generateContent(prompt);
+        const result = await model.generateContent(prompt);  // Pass prompt directly as string (SDK wraps it in contents)
         let aiResponse = result.response.text();
 
         // Extract JSON from markdown code blocks

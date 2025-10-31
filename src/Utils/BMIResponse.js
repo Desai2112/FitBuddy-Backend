@@ -7,7 +7,7 @@ export async function generateBMIAdvice(bmi) {
     }
 
     const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     try {
         const prompt = `Given a BMI of ${bmi}, provide a detailed health analysis specifically for a vegetarian diet in the following JSON format:

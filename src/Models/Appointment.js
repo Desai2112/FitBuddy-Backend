@@ -86,9 +86,10 @@ appointmentSchema.index({ status: 1 });
 
 appointmentSchema.pre('save', function (next) {
   const now = new Date();
-
+    console.log("Appointment Date:", this.appointmentDate);
+    console.log("Current Date:", now);
   // Validate appointmentDate
-  if (this.appointmentDate < now.setHours(0, 0, 0, 0)) {
+  if (this.appointmentDate <= now.setHours(0,0,0,0)) {
     return next(new Error('Appointment date cannot be in the past'));
   }
 
