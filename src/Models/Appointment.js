@@ -85,6 +85,9 @@ appointmentSchema.index({ doctorId: 1, appointmentDate: 1 });
 appointmentSchema.index({ status: 1 });
 
 appointmentSchema.pre('save', function (next) {
+    if (!this.isNew) {
+    return next();
+  }
   const now = new Date();
     console.log("Appointment Date:", this.appointmentDate);
     console.log("Current Date:", now);
