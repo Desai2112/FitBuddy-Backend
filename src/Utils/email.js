@@ -30,7 +30,7 @@ export const sendEmail = async ({ email, subject, template, data }) => {
     // Define email templates
     const templates = {
         appointmentConfirmation: `Hello ${data.name},\n\nYour appointment with Dr. ${data.doctorName} is confirmed for ${data.date} from ${data.time} (${data.mode}).\n\nThank you!`,
-        appointmentUpdate: `Hello ${data.name},\n\nYour appointment with Dr. ${data.doctorName} has been updated.\n\nNew details:\nDate: ${data.date}\nTime: ${data.time}\nMode: ${data.mode}\nStatus: ${data.status}\n\nThank you!`,
+        appointmentUpdate: `Hello ${data.name},\n\nYour appointment with Dr. ${data.doctorName} has been Completed\n\nThank you!`,
         appointmentCancellation: `Hello ${data.name},\n\nYour appointment with Dr. ${data.doctorName} scheduled for ${data.date} from ${data.time} has been cancelled.\n\nThank you!`
     };
 
